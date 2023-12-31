@@ -32,7 +32,7 @@ RUN set -ex \
     && echo "Tags JSON: $EFB_TAG_JSON" \
     && EFB_TAG_URL=$(echo $EFB_TAG_JSON | jq -r '.[0].tarball_url') \
     && echo "Downloading ehForwarderBot from $EFB_TAG_URL" \
-    && curl -L -o EFB-latest.tar.gz $EFB_TAG_URL
+    && curl -L -o EFB-latest.tar.gz $EFB_TAG_URL -v
 
 # 解压并安装 ehForwarderBot
 RUN set -ex \
