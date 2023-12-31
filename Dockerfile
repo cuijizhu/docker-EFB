@@ -22,12 +22,15 @@ RUN apk add --update --no-cache --virtual .fetch-deps \
         curl \
         tar
 
+# 安装 jq 用于解析 JSON
+RUN apk add --update --no-cache jq
+
 # 下载最新版本的 ehForwarderBot
 RUN set -ex \
     && echo "Fetching the latest tag of ehForwarderBot..." \
     && EFB_TAG_JSON=$(curl -s https://api.github.com/repos/blueset/ehForwarderBot/tags) \
     && echo "Tags JSON: $EFB_TAG_JSON" \
-    && EFB_TAG_URL=$(echo $EFB_TAG_JSON | grep tarball_url | head -n 1 | cut -d '"' -f 4) \
+    && EFB_TAG_URL=$(echo $EFB_TAG_JSON | jq -r '.[0].tarball_url') \
     && echo "Downloading ehForwarderBot from $EFB_TAG_URL" \
     && curl -L -o EFB-latest.tar.gz $EFB_TAG_URL
 
